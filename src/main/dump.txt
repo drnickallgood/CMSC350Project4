@@ -1,0 +1,493 @@
+Find the initial indegree for all node;
+for (int c = 0; c < Vertices; c++) {
+  Vertex v = findVertexOfIndegreeZero();
+  v.topSort = c;
+  for (Vertex w connected to v)
+    w.indegree = w.indegree – 1;
+}
+
+Find the initial indegree for all nodes;
+for (Vertex v in Vertices) {
+  if (v.indegree == 0)
+    queue.enqueue(v);
+}
+
+counter = 0;
+while (true) {
+  if queue.isEmpty()
+    break;
+  counter = counter + 1;
+  v = queue.dequeue();
+  v.topologicalOrder = counter;
+  for (Vertex w connected to v) {
+    w.indegree = w.indegree – 1;
+    if (w.indegree == 0)
+      queue.enqueue(w);
+  }
+}
+
+class Dijkstra {
+    public int dist = 0;
+    public boolean known = false;
+    Vertex Pv;
+}
+
+public void main() {
+    Dijkstra dijkstra[] = new Dijkstra[noOfVertices];
+    Shortestpath(dijkstra);
+}
+
+public void shortestPath(Dijkstra dijkstra) {
+for each Vertex w {
+  dijkstra[w].dist = Double.POSITIVE_INFINITY;
+  dijkstra[w].known = false;
+  dijkstra[w].Pv = null
+}
+
+dijkstra[initialVertex].distance = 0;
+
+while (true) {
+  v = null;
+
+  // find the smallest unknown vertex
+  currentDistance = Double.POSITIVE_INFINITY;
+  for each Vertex w {
+    if ((dijkstra[w].known == false) &&
+        (dijkstra[w].distance < currentDistance)) {
+      v = w;
+    }
+  }
+
+  // Stop the algorithm when no more nodes to process
+  if (v == null)
+    break;
+
+
+  // process this node.
+  dijkstra[v].known = true;
+  for each Vertex w adjacent to v {
+    if (dijkstra[w].known == false) {
+      if (dijkstra[v].distance + cost(v,w)
+              < dijkstra[w].distance) {
+        dijkstra[w].distance = dijkstra[v].distance
+                   + cost(v,w);
+	  w.Pv = v;
+      }
+    }
+  }
+}
+}
+
+depth_first_search(vertex s)
+  if s is discovered
+    throw cycle detected exception
+  if s is finished
+    return
+  mark s as discovered
+  for all adjacent vertices v
+    depth_first_search(v)
+  mark s as finished
+  push s onto the stack
+
+  ClassA ClassC ClassE
+  ClassB ClassD ClassG
+  ClassE ClassB ClassF ClassH
+  ClassI ClassC
+
+  Evaluate Class A first
+   - depends on classC
+      - depencs on class E
+         expand class E
+           - get to class B, expand class B
+            - no more classes to expand, return to e
+    - Class has no dependancies, print it
+
+    end
+
+
+  // Remove when testing
+
+when building adjacency list, use a hash map
+
+0 = ClassA
+1 = Class C
+2 = Class E
+
+  output
+
+  0 [[1, 2]
+  1 []
+  2 [3, 6, 7]
+  3 [4, 5]
+  4 []
+  5 []
+  6 []
+  7 []
+  8 [1]
+
+  The graph should be represented as an array list of vertices that contain a linked list of their
+   associated adjacency lists. The adjacency lists should be lists of integers that represent the index
+   rather than vertex name itself. A hash map should be used to associate vertex names with their index
+   in the list of vertices:
+
+
+
+   /**
+    * Created by nallgood on 1/11/17.
+    */
+   import java.awt.*;
+   import java.awt.event.ActionEvent;
+   import java.awt.event.ActionListener;
+   import javax.swing.*;
+
+
+
+   /* This class sets up a nicer frame for display */
+   class NiceFrame extends JFrame {
+       static final int WIDTH = 300, HEIGHT = 300;
+       public NiceFrame() {
+           super("Nice Frame");
+           setFrame(WIDTH, HEIGHT);
+       }
+
+       public NiceFrame(String title) {
+           super(title);
+           setFrame(WIDTH, HEIGHT);
+       }
+
+       public NiceFrame(String title, int width, int height) {
+           super(title);
+           setFrame(width, height);
+       }
+
+       public void display() {
+
+           setVisible(true);
+           pack();
+       }
+
+       private void setFrame(int width, int height) {
+           setSize(width, height);
+           setLocationRelativeTo(null);
+
+           setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       }
+   }
+
+   // This is a input/output panel that houses the input/output boxes
+   class InputOutputPanel extends JPanel {
+       //create input/output components
+       private JLabel exprLbl = new JLabel("Input File Name", JLabel.CENTER);
+
+       private JLabel resultLbl = new JLabel("Class to Recompile", JLabel.CENTER);
+
+       private JTextField exprTxt = new JTextField("");
+       private JTextField resultTxt = new JTextField("");
+       private JTextArea resultArea = new JTextArea();
+
+
+       public InputOutputPanel(PostfixTreePanel pPanel) {
+           setLayout(new GridLayout(2, 2));
+           resultTxt.setBackground(Color.lightGray);
+           resultTxt.setEditable(false);
+           add(exprLbl);
+           add(exprTxt);
+
+           add(resultLbl);
+           add(resultTxt);
+           add(resultArea);
+       }
+
+       String getExprTxt() {
+           return exprTxt.getText();
+       }
+
+       void setResultTxt(String result) {
+           resultTxt.setText(result);
+       }
+
+
+   }
+
+   // Panel for the buttons to attach to, then we attach to the input/output panel
+   class ButtonsPanel extends JPanel {
+
+       private PostfixTreePanel pPanel;
+
+       private JButton buildGraphBtn = new JButton("Build Directional Graph");
+       private JButton topOrderBtn = new JButton("Topological Order");
+
+
+       // Add to button groups
+
+
+
+
+
+       private ExpressionTree cTree;
+       private Node inOrder;
+
+       public ButtonsPanel (PostfixTreePanel pPanel) {
+           this.pPanel = pPanel;
+           setLayout(new FlowLayout(FlowLayout.CENTER));
+
+           add(expBtn);
+
+           expBtn.addActionListener(new ActionListener(){
+
+                                        public void actionPerformed(ActionEvent e){
+
+                                            cTree = new ExpressionTree();
+                                            btnBinaryOprAction();
+                                        }
+                                    }
+
+           );
+
+       }
+
+       // Action to call the class to tokenize and parse
+       // Input is a string, output will also be a string
+       public void btnBinaryOprAction() {
+           String expr = pPanel.ioPanel.getExprTxt();  // Get the input text/forula
+           // Sets the result txt to the output of our expression evaluator
+
+           // Calls to create the actual tree
+           // Stores the final node
+           inOrder = cTree.createTree(expr);
+
+           pPanel.ioPanel.setResultTxt(inOrder.inOrderWalk());
+       }
+   }
+
+   /* This is the panel that goes into the frame to attach the GUI components */
+   class PostfixTreePanel extends JPanel {
+       public InputOutputPanel ioPanel = new InputOutputPanel(this);
+       public ButtonsPanel btnPanel = new ButtonsPanel(this);
+       public PostfixTreePanel() {
+           setLayout(new BorderLayout());
+           setBackground(Color.lightGray);
+           add(ioPanel, BorderLayout.CENTER);
+           add(btnPanel, BorderLayout.SOUTH);
+       }
+
+
+   }
+
+   public class MainGui extends NiceFrame {
+
+       public MainGui() {
+           super("Class Dependency Graph", 450, 400);
+           add(new PostfixTreePanel());
+       }
+
+       static public void main(String[] args) {
+           MainGui pTree = new MainGui();
+           pTree.display();
+       }
+
+   }
+
+
+
+----
+
+
+/**
+ * Created by nallgood on 2/27/17.
+ */
+
+
+import java.util.*;
+import java.io.*;
+
+
+public class DirectedGraph<T> {
+
+    private HashMap<T, Vertex> graph = new HashMap<T, Vertex>();
+
+    private int numV;
+
+    public DirectedGraph(int numV) {
+
+        this.numV = numV;
+
+
+    }
+
+    public void initGraph(String filename) {
+
+       //loop
+        // read line
+        // chunk line into words
+        // place words in hashmap
+        // Map[0] -> ClassA
+        // Map[1] -> ClassB
+        // Map[2] -> ClassC
+        // Map[3] -> ClassC
+        // Map[4] -> ClassD
+        // Map[5] -> ClassE
+
+        //List of linked lists
+
+        // List[0] = LinkedList[0] = Map.get[0] - A
+        //  ..                 [1] = Map.get[1] - ?
+
+        // read until map end or ? is found in map
+          // while not found
+            // add ? to linked list of current list
+            // go to next item in map
+        // End Map Reader iteration
+        // increment List Counter and linked list counter
+
+        // End Line reader iteration
+
+        // once all done we should have:
+        // List[0] = linkedlist[0](0) -> ll[1](1) -> ll[2](2)
+        //
+        // List[1] = linkedlist[0](2) -> ll[1](3) -> ll[2](4)
+
+
+    }
+
+    public void addEdge(Vertex<T> src, Vertex<T> dst) {
+
+
+
+    }
+
+
+    public void sortTopOrder() {
+
+        // iterate through list
+         // iterate through linked list
+           // get name for integer
+
+        /*
+        depth_first_search(vertex s)
+  if s is discovered
+    throw cycle detected exception
+  if s is finished
+    return
+  mark s as discovered
+  for all adjacent vertices v
+    depth_first_search(v)
+  mark s as finished
+  push s onto the stack
+         */
+
+    }
+
+    private void printAdjList() {
+
+
+    }
+
+
+    // For testing
+    public static void main(String[] args) {
+
+        // Open File Code
+        String words = "A B C\nC D E\nF G";
+
+        Scanner wordScan = new Scanner(words);
+        //ArrayList<String> aList = new ArrayList<String>(Arrays.asList(words.split("\\s+")));
+
+         HashMap<Integer, String> myMap = new HashMap<Integer, String>();
+         ArrayList<LinkedList<Integer>> aList = new ArrayList<LinkedList<Integer>>();
+        ArrayList<LinkedList<String>> sList = new ArrayList<LinkedList<String>>();
+        LinkedList<String> ssList = new LinkedList<String>();
+
+         int counter = 0;
+
+        while(wordScan.hasNextLine()) {
+
+            //System.out.println(wordScan.nextLine());
+            ArrayList<String> bList = new ArrayList<String>(Arrays.asList(wordScan.nextLine().split("\\s+")));
+
+           // System.out.println(bList);
+            // Reset wordscanner
+            //wordScan.reset();
+            LinkedList<Integer> neighbors = new LinkedList<Integer>();
+
+            for(String word : bList) {
+
+                // Populate hash map
+
+                  myMap.put(counter, word);
+                  neighbors.add(counter);
+                  //ssList.add(myMap.get(counter));
+                  counter++;
+              }
+
+
+           aList.add(neighbors);
+           // sList.add(ssList);
+
+           // System.out.println(sList);
+        }
+
+        wordScan.close();
+
+        for(int i = 0; i < aList.size(); i++) {
+
+            //System.out.println(aList.get(i));
+            for(int j = 0; j < aList.get(i).size(); j++) {
+
+                //alist.get(0) = first list
+            }
+
+
+        }
+
+        System.out.println(sList);
+       // aList.add(neighbors);
+
+       //System.out.println(myMap);
+        //System.out.println(aList.get);
+
+        // Loop through initial list
+        for(int i = 0; i < aList.size(); i++) {
+
+            // Loop through sublist
+            for(int j = 0; j < aList.get(i).size(); j++) {
+
+                //System.out.println(aList.get(i).get(j));
+               // System.out.println(myMap.get(aList.get(i).get(j)));
+
+
+            }
+           // System.out.println(myMap.get(i));
+            //System.out.print(i+": ");
+           // System.out.println(aList.get(i));
+
+            //System.out.print(i+": ");
+           // System.out.println(aList);
+
+        }
+
+
+
+    }
+
+
+}
+
+
+        ArrayList<LinkedList<Integer>> adj_list = new ArrayList<LinkedList<Integer>>();
+
+        adj_list.add(new LinkedList<Integer>());
+        adj_list.add(new LinkedList<Integer>());
+
+        adj_list.get(0).add(3);
+        adj_list.get(0).add(4);
+        adj_list.get(0).add(5);
+        adj_list.get(1).add(3);
+
+        System.out.println(adj_list);
+
+        //int i = Collections.frequency(adj_list.get(0), 5);
+
+       // System.out.println(Collections.frequency(adj_list.get(0), 3));
+       // System.out.println(Collections.frequency(adj_list.get(1), 3));
+

@@ -15,7 +15,7 @@ public class DirectedGraph<T> {
 
     // adjacency list will have vertex neighbor neighbor
     // ClassA ClassB ClassC
-     private ArrayList<LinkedList<Vertex>> adjList = new ArrayList<LinkedList<Vertex>>();
+    private ArrayList<Vertex> adjList = new ArrayList<Vertex>();
     ArrayList<ArrayList<String>> listOfWordLists = new ArrayList<ArrayList<String>>();
 
     private Stack<Vertex> vStack = new Stack<Vertex>();
@@ -40,45 +40,42 @@ public class DirectedGraph<T> {
 
             // put words in a word list
             wordList = new ArrayList<String>(Arrays.asList(wordScan.nextLine().split("\\s+")));
+            int counter = 0;
+            // if wordlist size > 1
+            // loop thorugh word list
+            // first node is the vertex
+            // add neighbors to vertex
 
-            // Add the list of parsed words to the list of word lsits
-            listOfWordLists.add(wordList);
+            // Ifwe have more than one entry here, then we know we have neighbors
+
+            Vertex V;
+            V = new Vertex();
+            V.setName(wordList.get(counter));
+            V.setID(counter);
+           // System.out.println("Creating new Head vertex: " + V.getName());
 
 
-                //tempL.add(new Vertex());
-               // tempL.get(i).setName(wordList.get(i));
+                for(int i = 1; i < wordList.size(); i++) {
 
+                        //Create a new vertex that is a neighbor
+                        // Set ID and name
+                       Vertex newV = new Vertex();
+                        newV.setName(wordList.get(i));
+                        newV.setID(i);
 
-               // System.out.println("Adding vertex: " + tempL.get(i).getName() + " to list position: " +i);
+                        // Add new vertex as neighbor to current vertex
+                        V.setNeighbors(newV);
 
+                }
 
-            //adjList.add(tempL);
-
+                // Add all verticies that have neighbors to the graph list
+            adjList.add(V);
+            counter++;
         }
 
        // adjList.add(tempL);
         // Close Scanner Object
         wordScan.close();
-
-        for(int i = 0; i < listOfWordLists.size(); i++) {
-
-            // Add a new linked list to our list of lists
-            adjList.add(new LinkedList<Vertex>());
-
-            for(int j = 0; j < listOfWordLists.get(i).size(); j++ ) {
-
-                adjList.get(i).add(new Vertex());
-                String name = listOfWordLists.get(i).get(j);
-                adjList.get(i).get(j).setName(name);
-
-                // do a depth first search
-                dfs(adjList.get(i).get(j));
-
-            }
-        }
-        //System.out.println(newMap);
-
-
 
     }
 
@@ -94,6 +91,18 @@ public class DirectedGraph<T> {
 
         ArrayList<Vertex> vList  = new ArrayList<Vertex>();
 
+        try {
+
+            for(Vertex v : adjList) {
+
+                depthFirstSearch(v);
+            }
+
+        } catch (CycleException e ) {
+
+            System.out.println("Cycle Detected!");
+
+        }
         // Check to see the stacks not empty
       while(!vStack.empty()) {
 
@@ -125,23 +134,30 @@ public class DirectedGraph<T> {
     }
 
 
-    public int dfs(Vertex s) {
+    public int depthFirstSearch(Vertex s) throws CycleException {
 
         // Have we visited this vertex before?
         if(s.isVisited()) {
 
-            //throw new Exception("Cycle detected for Vertex");
-            System.out.println("Cycle detected!\n");
+            throw new CycleException();
+            //System.out.println("Cycle detected!\n");
             //System.exit(-1);
         }
 
-        if(adjList.isEmpty()) {
+        // Do we have any neighbors?
+        if(s.getNeighbors().isEmpty()) {
 
-            return 1;
+            return 0;
         }
 
         // Set vertex as visited
         s.setVisited();
+
+        // Do a DFS on each neighbor of the vertex
+        for(Vertex v : s.getNeighbors()) {
+
+            depthFirstSearch(v);
+        }
 
         // Push vertex to stack
         vStack.push(s);
@@ -152,15 +168,16 @@ public class DirectedGraph<T> {
 
     private void printAdjList() {
 
-       //System.out.println(adjList.get(0).get(0).getName());
-        for(int i = 0; i < listOfWordLists.size(); i++) {
+        for(Vertex V : adjList) {
 
-            for(int j = 0; j < listOfWordLists.get(i).size(); j++) {
+            System.out.println("Vertex: " + V.getName());
+            for(Vertex Z : V.getNeighbors()) {
 
-                System.out.print(adjList.get(i).get(j).getName() + " ");
+                System.out.println("Neighbors: " + Z.getName());
             }
 
             System.out.println();
+
         }
 
     }
@@ -176,9 +193,9 @@ public class DirectedGraph<T> {
 
         graph.initGraph(filename);
 
-        graph.printAdjList();
+       // graph.printAdjList();
 
-        graph.sortTopOrder();
+       graph.sortTopOrder();
 
 
     }

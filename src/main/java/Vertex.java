@@ -10,6 +10,9 @@ public class Vertex {
     private String name;
     private int id;
 
+    // List of neighbors
+    LinkedList<Vertex> neighbors = new LinkedList<Vertex>();
+
 
     public Vertex() {
 
@@ -44,6 +47,16 @@ public class Vertex {
     public void setID(int i ) {
 
         id = i;
+    }
+
+    public void setNeighbors(Vertex v) {
+
+        neighbors.add(v);
+    }
+
+    public LinkedList<Vertex> getNeighbors() {
+
+        return neighbors;
     }
 
 
