@@ -9,11 +9,10 @@ public class Vertex {
     private boolean visited = false;
     private String name;
     private int id;
-    private boolean discovered = false;
+    private boolean neighbor = false;
 
     // List of neighbors
     LinkedList<Vertex> neighbors = new LinkedList<Vertex>();
-
 
     public Vertex() {
 
@@ -50,7 +49,7 @@ public class Vertex {
         id = i;
     }
 
-    public void setNeighbors(Vertex v) {
+    public void addNeighbor(Vertex v) {
 
         neighbors.add(v);
     }
@@ -60,14 +59,13 @@ public class Vertex {
         return neighbors;
     }
 
-    public boolean isDiscovered() {
+    public void setNeighbor() {
 
-        return discovered;
+         neighbor = true;
     }
 
-    public void setDiscovered() {
+    public boolean isNeighbor() {
 
-        discovered = true;
+        return neighbor;
     }
-
 }

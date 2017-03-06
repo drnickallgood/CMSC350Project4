@@ -495,3 +495,20 @@ public class DirectedGraph<T> {
 
 you do something like: "if className in hashmap: return hashmap[classname]
 else: hashmap[classname] = new │·            Vertex()"
+
+
+        /*
+        depth_first_search(vertex s)
+  if s is discovered
+    throw cycle detected exception
+
+  if s is finished
+    return
+
+  mark s as discovered
+  for all adjacent vertices v
+    depth_first_search(v)
+
+  mark s as finished
+  push s onto the stack
+         */
