@@ -16,9 +16,11 @@ public class DirectedGraph<T> {
     // adjacency list will have vertex neighbor neighbor
     // ClassA ClassB ClassC
     private ArrayList<Vertex> adjList = new ArrayList<Vertex>();
-    ArrayList<ArrayList<String>> listOfWordLists = new ArrayList<ArrayList<String>>();
 
     private Stack<Vertex> vStack = new Stack<Vertex>();
+
+    private HashMap<String, Integer> adjHash = new HashMap<String, Integer>();
+
 
     public DirectedGraph() {
 
@@ -41,17 +43,13 @@ public class DirectedGraph<T> {
             // put words in a word list
             wordList = new ArrayList<String>(Arrays.asList(wordScan.nextLine().split("\\s+")));
             int counter = 0;
-            // if wordlist size > 1
-            // loop thorugh word list
-            // first node is the vertex
-            // add neighbors to vertex
-
-            // Ifwe have more than one entry here, then we know we have neighbors
 
             Vertex V;
             V = new Vertex();
             V.setName(wordList.get(counter));
             V.setID(counter);
+
+
            // System.out.println("Creating new Head vertex: " + V.getName());
 
 
@@ -71,13 +69,16 @@ public class DirectedGraph<T> {
                 // Add all verticies that have neighbors to the graph list
             adjList.add(V);
             counter++;
+
         }
 
        // adjList.add(tempL);
         // Close Scanner Object
         wordScan.close();
 
-        System.out.println("Graph Built Successfully!\n");
+        //System.out.println("Graph Built Successfully!\n");
+
+
     }
 
     // Adds new edge between the src/dest vertex
@@ -87,7 +88,6 @@ public class DirectedGraph<T> {
 
     }
 
-
     public void printTopOrder(Vertex z) {
 
         System.out.print(z.getName()+ " ");
@@ -95,6 +95,7 @@ public class DirectedGraph<T> {
         System.out.print(z.getNeighbors());
 
         System.out.println();
+
 
     }
     public void sortTopOrder() {
@@ -147,6 +148,54 @@ public class DirectedGraph<T> {
 
     }
 
+    private void testDFSPrint() {
+
+        //
+
+        try {
+
+            for(Vertex v : adjList) {
+
+                testDFS(v);
+            }
+
+        } catch (CycleException e) {
+
+            e.printStackTrace();
+        }
+
+        while(!vStack.empty()) {
+
+            System.out.print(vStack.pop().getName() + " ");
+        }
+    }
+
+    private int testDFS(Vertex s) throws CycleException {
+
+
+
+        if(s.isVisited()) {
+
+            throw new CycleException();
+        }
+        // Mark s visited
+        s.setVisited();
+
+
+        // Go through all the neighbors
+        for(Vertex v : s.getNeighbors()) {
+
+            if(!v.isVisited()) {
+
+                testDFS(v);
+
+            }
+        }
+
+        vStack.push(s);
+
+        return 0;
+    }
 
     public int depthFirstSearch(Vertex s) throws CycleException {
 
@@ -176,6 +225,7 @@ public class DirectedGraph<T> {
 
             depthFirstSearch(v);
             v.setVisited();
+            vStack.push(v);
 
         }
 
@@ -211,16 +261,26 @@ public class DirectedGraph<T> {
 
         //String filename = "ClassA ClassB ClassC\nClassC ClassD ClassE\nClassF ClassG";
         //String filename = "ClassA ClassB ClassC\nClassC ClassD ClassE\nClassF ClassB";
-        String filename = "ClassA ClassC ClassE\nClassB ClassD ClassG\nClassE ClassB ClassF ClassH\nClassI ClassC";
+
+        String filename = "ClassA ClassC ClassE\n" +
+                "ClassB ClassD ClassG\n" +
+                "ClassE ClassB ClassF ClassH\n" +
+                "ClassI ClassC";
+
+
         //String filename = "ClassA ClassB ClassC";
 
         DirectedGraph<String> graph = new DirectedGraph<String>();
 
         graph.initGraph(filename);
 
-      graph.printAdjList();
+      //graph.printAdjList();
 
       //graph.sortTopOrder();
+
+        graph.testDFSPrint();
+
+
 
 
     }
