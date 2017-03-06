@@ -77,6 +77,7 @@ public class DirectedGraph<T> {
         // Close Scanner Object
         wordScan.close();
 
+        System.out.println("Graph Built Successfully!\n");
     }
 
     // Adds new edge between the src/dest vertex
@@ -87,6 +88,15 @@ public class DirectedGraph<T> {
     }
 
 
+    public void printTopOrder(Vertex z) {
+
+        System.out.print(z.getName()+ " ");
+
+        System.out.print(z.getNeighbors());
+
+        System.out.println();
+
+    }
     public void sortTopOrder() {
 
         ArrayList<Vertex> vList  = new ArrayList<Vertex>();
@@ -98,35 +108,39 @@ public class DirectedGraph<T> {
                 depthFirstSearch(v);
             }
 
-        } catch (CycleException e ) {
+        } catch (CycleException e) {
 
             System.out.println("Cycle Detected!");
 
+
         }
-        // Check to see the stacks not empty
-      while(!vStack.empty()) {
 
-          // Pop the stack and add to the list
-          vList.add(vStack.pop());
+        while(!vStack.empty()){
 
-      }
+            Vertex current = vStack.pop();
 
-     // System.out.println(vList);
+            //System.out.print(current.getName());
 
-        for(int i = 0; i < vList.size(); i++) {
+            for(Vertex z : current.getNeighbors()) {
 
-          System.out.print(vList.get(i).getName() + " ");
+                System.out.print(" " + z.getName() + " ");
+            }
+
+           // System.out.println("\n");
         }
 
         /*
         depth_first_search(vertex s)
   if s is discovered
     throw cycle detected exception
+
   if s is finished
     return
+
   mark s as discovered
   for all adjacent vertices v
     depth_first_search(v)
+
   mark s as finished
   push s onto the stack
          */
@@ -136,12 +150,11 @@ public class DirectedGraph<T> {
 
     public int depthFirstSearch(Vertex s) throws CycleException {
 
-        // Have we visited this vertex before?
+
+        // If we have visited a node already we have a cycle in the graph
         if(s.isVisited()) {
 
             throw new CycleException();
-            //System.out.println("Cycle detected!\n");
-            //System.exit(-1);
         }
 
         // Do we have any neighbors?
@@ -156,7 +169,14 @@ public class DirectedGraph<T> {
         // Do a DFS on each neighbor of the vertex
         for(Vertex v : s.getNeighbors()) {
 
+            if(v.isVisited()) {
+
+                throw new CycleException();
+            }
+
             depthFirstSearch(v);
+            v.setVisited();
+
         }
 
         // Push vertex to stack
@@ -165,17 +185,19 @@ public class DirectedGraph<T> {
         return 0;
     }
 
-
     private void printAdjList() {
 
         for(Vertex V : adjList) {
 
             System.out.println("Vertex: " + V.getName());
+
+            System.out.print("Neighbors: ");
             for(Vertex Z : V.getNeighbors()) {
 
-                System.out.println("Neighbors: " + Z.getName());
+                System.out.print(Z.getName() + " ");
             }
 
+            System.out.println();
             System.out.println();
 
         }
@@ -187,15 +209,18 @@ public class DirectedGraph<T> {
 
         // Open File Code
 
-        String filename = "ClassA ClassB ClassC\nClassC ClassD ClassE\nClassF ClassG";
+        //String filename = "ClassA ClassB ClassC\nClassC ClassD ClassE\nClassF ClassG";
+        //String filename = "ClassA ClassB ClassC\nClassC ClassD ClassE\nClassF ClassB";
+        String filename = "ClassA ClassC ClassE\nClassB ClassD ClassG\nClassE ClassB ClassF ClassH\nClassI ClassC";
+        //String filename = "ClassA ClassB ClassC";
 
         DirectedGraph<String> graph = new DirectedGraph<String>();
 
         graph.initGraph(filename);
 
-       // graph.printAdjList();
+      graph.printAdjList();
 
-       graph.sortTopOrder();
+      //graph.sortTopOrder();
 
 
     }
