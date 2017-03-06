@@ -491,3 +491,7 @@ public class DirectedGraph<T> {
        // System.out.println(Collections.frequency(adj_list.get(0), 3));
        // System.out.println(Collections.frequency(adj_list.get(1), 3));
 
+
+
+you do something like: "if className in hashmap: return hashmap[classname]
+else: hashmap[classname] = new │·            Vertex()"

@@ -9,6 +9,7 @@ public class Vertex {
     private boolean visited = false;
     private String name;
     private int id;
+    private boolean discovered = false;
 
     // List of neighbors
     LinkedList<Vertex> neighbors = new LinkedList<Vertex>();
@@ -59,5 +60,14 @@ public class Vertex {
         return neighbors;
     }
 
+    public boolean isDiscovered() {
+
+        return discovered;
+    }
+
+    public void setDiscovered() {
+
+        discovered = true;
+    }
 
 }
