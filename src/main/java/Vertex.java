@@ -11,6 +11,9 @@ public class Vertex {
     private int id;
     private boolean neighbor = false;
     private boolean discovered = false;
+    private boolean vertex = false;
+    private boolean current = false;
+    private String color = "white";
 
     // List of neighbors
     LinkedList<Vertex> neighbors = new LinkedList<Vertex>();
@@ -70,6 +73,16 @@ public class Vertex {
         return neighbor;
     }
 
+    public boolean hasNeighbors() {
+
+        if(neighbors.isEmpty()) {
+
+            return false;
+        }
+
+        return true;
+    }
+
     public boolean isDiscovered() {
 
         return discovered;
@@ -84,4 +97,11 @@ public class Vertex {
 
         discovered = false;
     }
+
+    public void setVertex() {
+
+        vertex = true;
+    }
+
 }
+

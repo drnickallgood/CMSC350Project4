@@ -16,8 +16,8 @@ public class DirectedGraph<T> {
 
     public void initGraph(String filename) {
 
-        Scanner wordScan = new Scanner(filename);
-        ArrayList<String> wordList = new ArrayList<String>();
+        //Scanner wordScan = new Scanner(filename);
+        //ArrayList<String> wordList = new ArrayList<String>();
         ArrayList<ArrayList<String>> listOfWordLists;
 
         listOfWordLists = parseFile(filename);
@@ -27,6 +27,7 @@ public class DirectedGraph<T> {
             // Check against hash
             Vertex node = checkHash(listOfWordLists.get(i).get(0));
             node.setName(listOfWordLists.get(i).get(0));
+            node.setVertex();
 
             for(int j = 1; j < listOfWordLists.get(i).size(); j++) {
 
@@ -115,8 +116,11 @@ public class DirectedGraph<T> {
         if(s.isDiscovered()) {
 
            // System.out.println("\n\n" + s.getName());
-            throw new CycleException();
+           throw new CycleException();
         }
+
+        // We currently have discovered this node in teh chain
+        s.setDiscovered();
 
         // in the recursive call within the neighbors of the node have we discovered it?
         // We have visited the node via DFS
@@ -126,20 +130,24 @@ public class DirectedGraph<T> {
             return -1;
         }
 
-        s.setDiscovered();
+        if(s.isNeighbor()) {
 
-        // Go through all the neighbors
-        for(Vertex v : s.getNeighbors()) {
-
-            // Has v been visited from anotehr branch?
-         //   if(!v.isVisited()) {
-
-                testDFS(v);
-          //  }
-
+            // I feel like this is useful to fix the issue
         }
+            // Does vertex have neighbors
+            if (s.hasNeighbors()) {
 
-        s.setVisited();
+                // Go through all the neighbors
+                for (Vertex v : s.getNeighbors()) {
+
+                    testDFS(v);
+                }
+            }
+
+        // We have finished the DFS search of this node
+       s.setVisited();
+       //s.unSetDiscovered();
+
         vStack.push(s);
 
         return 0;
