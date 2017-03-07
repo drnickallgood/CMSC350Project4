@@ -92,7 +92,10 @@ public class DirectedGraph<T> {
             for(Vertex x : adjList) {
 
                 //testDFS(x);
-                testDFS(x);
+                if(!x.isVisited()) {
+
+                    testDFS(x);
+                }
             }
 
         } catch (CycleException e) {
@@ -108,25 +111,35 @@ public class DirectedGraph<T> {
 
     private int testDFS(Vertex s) throws CycleException {
 
-        // in the recursive call within the neighbors of the node have we discovered it?
+        // Node has already been discovered
+        if(s.isDiscovered()) {
 
-        if(s.isVisited()) {
-
+           // System.out.println("\n\n" + s.getName());
             throw new CycleException();
         }
 
-        s.setVisited();
+        // in the recursive call within the neighbors of the node have we discovered it?
+        // We have visited the node via DFS
+        if(s.isVisited()) {
+
+            //throw new CycleException();
+            return -1;
+        }
+
+        s.setDiscovered();
 
         // Go through all the neighbors
         for(Vertex v : s.getNeighbors()) {
 
             // Has v been visited from anotehr branch?
-            if(v.isNeighbor()) {
+         //   if(!v.isVisited()) {
 
                 testDFS(v);
-            }
+          //  }
+
         }
 
+        s.setVisited();
         vStack.push(s);
 
         return 0;
