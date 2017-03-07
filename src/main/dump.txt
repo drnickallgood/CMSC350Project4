@@ -512,3 +512,26 @@ else: hashmap[classname] = new │·            Vertex()"
   mark s as finished
   push s onto the stack
          */
+
+
+Stack stack = new stack
+
+    public void visit(vertex v)
+        if v.isVisisted()
+            throw exception
+            else
+            v.setVisited
+            for(vertex m : v.getNeighbors)
+               visit(m)
+             v.setVisited()
+             stack.push(v)
+
+
+
+
+
+
+
+
+
+

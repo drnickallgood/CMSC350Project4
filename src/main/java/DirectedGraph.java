@@ -8,6 +8,7 @@ public class DirectedGraph<T> {
     private ArrayList<Vertex> adjList = new ArrayList<Vertex>();
     private Stack<Vertex> vStack = new Stack<Vertex>();
     private HashMap<String, Vertex> adjHash = new HashMap<String, Vertex>();
+    //private HashMap<Integer, Set<Integer>> adjSet = new HashMap<Integer, Set<Integer>>();
 
     public DirectedGraph() {
 
@@ -17,19 +18,20 @@ public class DirectedGraph<T> {
 
         Scanner wordScan = new Scanner(filename);
         ArrayList<String> wordList = new ArrayList<String>();
-
         ArrayList<ArrayList<String>> listOfWordLists;
 
         listOfWordLists = parseFile(filename);
 
         for(int i = 0; i < listOfWordLists.size(); i++ ) {
 
-            Vertex node = new Vertex();
+            // Check against hash
+            Vertex node = checkHash(listOfWordLists.get(i).get(0));
             node.setName(listOfWordLists.get(i).get(0));
 
             for(int j = 1; j < listOfWordLists.get(i).size(); j++) {
 
-                Vertex neighbor = new Vertex();
+                //Vertex neighbor = new Vertex();
+                Vertex neighbor = checkHash(listOfWordLists.get(i).get(j));
                 neighbor.setName(listOfWordLists.get(i).get(j));
 
                 // This is a neighbor node
@@ -40,6 +42,22 @@ public class DirectedGraph<T> {
             }
 
             adjList.add(node);
+        }
+    }
+
+    public Vertex checkHash(String vName) {
+
+        // We already have
+        if (adjHash.containsKey(vName)) {
+
+            return adjHash.get(vName);
+        }
+        else {
+
+            Vertex v = new Vertex();
+            adjHash.put(vName, v);
+
+            return v;
         }
     }
 
@@ -60,11 +78,6 @@ public class DirectedGraph<T> {
         return listOfWordLists;
     }
 
-    public String getVertexByName(Vertex V) {
-
-        return V.getName();
-    }
-
     // Adds new edge between the src/dest vertex
     public void addEdge(int src, Vertex dst) {
 
@@ -78,6 +91,7 @@ public class DirectedGraph<T> {
 
             for(Vertex x : adjList) {
 
+                //testDFS(x);
                 testDFS(x);
             }
 
@@ -139,6 +153,7 @@ public class DirectedGraph<T> {
     public static void main(String[] args) {
 
         // Open File Code
+        // throw exception if file not found and display msg
 
         //String filename = "ClassA ClassB ClassC\nClassC ClassD ClassE\nClassF ClassG";
         //String filename = "ClassA ClassB ClassC\nClassC ClassD ClassE\nClassF ClassB";
@@ -152,8 +167,8 @@ public class DirectedGraph<T> {
 
         DirectedGraph<String> graph = new DirectedGraph<String>();
         graph.initGraph(filename);
-        graph.printAdjList();
-       //graph.testDFSPrint();
+        //graph.printAdjList();
+       graph.testDFSPrint();
 
     }
 }
