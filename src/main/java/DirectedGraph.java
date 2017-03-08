@@ -1,25 +1,25 @@
+import javax.swing.*;
 import java.util.*;
 import java.io.*;
 
 
 public class DirectedGraph<T> {
 
-    private int numV;
     private ArrayList<Vertex> adjList = new ArrayList<Vertex>();
     private Stack<Vertex> vStack = new Stack<Vertex>();
     private HashMap<String, Vertex> adjHash = new HashMap<String, Vertex>();
     //private HashMap<Integer, Set<Integer>> adjSet = new HashMap<Integer, Set<Integer>>();
 
-    public DirectedGraph() {
+    private String vertexToGet;
 
+    public DirectedGraph(String vertexToGet) {
+
+        this.vertexToGet = vertexToGet;
     }
 
     public void initGraph(String filename) {
 
-        //Scanner wordScan = new Scanner(filename);
-        //ArrayList<String> wordList = new ArrayList<String>();
         ArrayList<ArrayList<String>> listOfWordLists;
-
         listOfWordLists = parseFile(filename);
 
         for(int i = 0; i < listOfWordLists.size(); i++ ) {
@@ -27,7 +27,7 @@ public class DirectedGraph<T> {
             // Check against hash
             Vertex node = checkHash(listOfWordLists.get(i).get(0));
             node.setName(listOfWordLists.get(i).get(0));
-            node.setVertex();
+           // node.setVertex();
 
             for(int j = 1; j < listOfWordLists.get(i).size(); j++) {
 
@@ -44,8 +44,24 @@ public class DirectedGraph<T> {
 
             adjList.add(node);
         }
+
+        JOptionPane.showMessageDialog(null, "Graph Built Successfully!");
     }
 
+    // Finds vertex in the hashmap via the name
+    public Vertex getVertexByName(String name) {
+
+        if (adjHash.containsKey(name)) {
+
+            return adjHash.get(name);
+        }
+
+        // else return nothing
+        return null;
+    }
+
+    // Checks the hashmap for the vertex
+    // returns it if found, if not creates a new vertex
     public Vertex checkHash(String vName) {
 
         // We already have
@@ -66,14 +82,27 @@ public class DirectedGraph<T> {
     // containing lists of words
     public ArrayList<ArrayList<String>> parseFile(String filename) {
 
-        Scanner wordScan = new Scanner(filename);
         ArrayList<String> wordList;
         ArrayList<ArrayList<String>> listOfWordLists = new ArrayList<ArrayList<String>>();
+        String wordScan;
 
-        while (wordScan.hasNext()) {
+        try {
+            // Get filename from GUI input
+            File file = new File(filename);
+            BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            wordList = new ArrayList<String>(Arrays.asList(wordScan.nextLine().split("\\s+")));
-            listOfWordLists.add(wordList);
+            while ((wordScan = reader.readLine()) != null) {
+
+                wordList = new ArrayList<String>(Arrays.asList(wordScan.split("\\s+")));
+                listOfWordLists.add(wordList);
+            }
+
+        }
+        catch(IOException e) {
+
+            // Error cannot open file
+            JOptionPane.showMessageDialog(null, "Cannot open file!", "Error!", JOptionPane.ERROR_MESSAGE);
+
         }
 
         return listOfWordLists;
@@ -82,35 +111,45 @@ public class DirectedGraph<T> {
     // Adds new edge between the src/dest vertex
     public void addEdge(int src, Vertex dst) {
 
-       // adjList.get(src).add(dst);
         adjList.get(src).addNeighbor(dst);
     }
 
-    private void testDFSPrint() {
+    private void sortTopOrder() {
+
+        // Get the index if it exists
+        int i = adjList.indexOf(getVertexByName(vertexToGet));
+
+        if(i == -1) {
+
+            // Error! Not found in adj list
+            JOptionPane.showMessageDialog(null, "Cannot find Class!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
 
         try {
 
-            for(Vertex x : adjList) {
+            for(Vertex x : adjList.get(i).getNeighbors()) {
 
-                //testDFS(x);
                 if(!x.isVisited()) {
 
-                    testDFS(x);
+                    depthFirstSearch(x);
                 }
             }
 
+            System.out.print(adjList.get(i).getName() + " ");
+
         } catch (CycleException e) {
 
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Cycle Detected!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
 
         while(!vStack.empty()) {
 
-            System.out.print(vStack.pop().getName() + " ");
+            Vertex v = vStack.pop();
+            System.out.print(v.getName() + " ");
         }
     }
 
-    private int testDFS(Vertex s) throws CycleException {
+    private int depthFirstSearch(Vertex s) throws CycleException {
 
         // Node has already been discovered
         if(s.isDiscovered()) {
@@ -126,7 +165,6 @@ public class DirectedGraph<T> {
         // We have visited the node via DFS
         if(s.isVisited()) {
 
-            //throw new CycleException();
             return -1;
         }
 
@@ -140,14 +178,12 @@ public class DirectedGraph<T> {
                 // Go through all the neighbors
                 for (Vertex v : s.getNeighbors()) {
 
-                    testDFS(v);
+                    depthFirstSearch(v);
                 }
             }
 
         // We have finished the DFS search of this node
        s.setVisited();
-       //s.unSetDiscovered();
-
         vStack.push(s);
 
         return 0;
@@ -176,20 +212,27 @@ public class DirectedGraph<T> {
         // Open File Code
         // throw exception if file not found and display msg
 
-        //String filename = "ClassA ClassB ClassC\nClassC ClassD ClassE\nClassF ClassG";
-        //String filename = "ClassA ClassB ClassC\nClassC ClassD ClassE\nClassF ClassB";
-
+        /*
         String filename = "ClassA ClassC ClassE\n" +
                 "ClassB ClassD ClassG\n" +
                 "ClassE ClassB ClassF ClassH\n" +
                 "ClassI ClassC";
+*/
+        // Sets the class to do the DFS for
+        String input = "ClassA";
+        DirectedGraph<String> graph = new DirectedGraph<String>(input);
 
-        //String filename = "ClassA ClassB ClassC";
+        //graph.parseFile(filename);
 
-        DirectedGraph<String> graph = new DirectedGraph<String>();
+        String filename = "graph.txt";
         graph.initGraph(filename);
-        //graph.printAdjList();
-       graph.testDFSPrint();
+       graph.sortTopOrder();
+
+       // to do
+        // tie to GUI
+
+        // Set ID's on nodes
+        // Convert to using integer to vertex hash and store integer in adjlist
 
     }
 }

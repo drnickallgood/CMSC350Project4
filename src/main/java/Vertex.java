@@ -6,20 +6,33 @@ import java.io.*;
  */
 public class Vertex {
 
+    // End of DFS search
     private boolean visited = false;
     private String name;
     private int id;
+
+    // Is a neighbor node
     private boolean neighbor = false;
+
+    //Is currently found but not at the end of DFS search
     private boolean discovered = false;
-    private boolean vertex = false;
-    private boolean current = false;
-    private String color = "white";
 
     // List of neighbors
     LinkedList<Vertex> neighbors = new LinkedList<Vertex>();
 
     public Vertex() {
 
+    }
+
+    public Vertex(String name) {
+
+        this.name = name;
+    }
+
+    public Vertex(int id, String name) {
+
+        this.id = id;
+        this.name = name;
     }
 
     public boolean isVisited() {
@@ -91,16 +104,6 @@ public class Vertex {
     public void setDiscovered() {
 
         discovered = true;
-    }
-
-    public void unSetDiscovered(){
-
-        discovered = false;
-    }
-
-    public void setVertex() {
-
-        vertex = true;
     }
 
 }
