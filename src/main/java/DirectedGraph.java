@@ -9,12 +9,20 @@ public class DirectedGraph<T> {
     private Stack<Vertex> vStack = new Stack<Vertex>();
     private HashMap<String, Vertex> adjHash = new HashMap<String, Vertex>();
     //private HashMap<Integer, Set<Integer>> adjSet = new HashMap<Integer, Set<Integer>>();
-
     private String vertexToGet;
+    private StringBuilder sortedResult = new StringBuilder();
 
+    public DirectedGraph() {
+
+    }
     public DirectedGraph(String vertexToGet) {
 
         this.vertexToGet = vertexToGet;
+    }
+
+    public void setVertexToGet(String vertex) {
+
+        vertexToGet = vertex;
     }
 
     public void initGraph(String filename) {
@@ -114,7 +122,7 @@ public class DirectedGraph<T> {
         adjList.get(src).addNeighbor(dst);
     }
 
-    private void sortTopOrder() {
+    public void sortTopOrder() {
 
         // Get the index if it exists
         int i = adjList.indexOf(getVertexByName(vertexToGet));
@@ -135,7 +143,8 @@ public class DirectedGraph<T> {
                 }
             }
 
-            System.out.print(adjList.get(i).getName() + " ");
+            //System.out.print(adjList.get(i).getName() + " ");
+            sortedResult.append(adjList.get(i).getName() + " ");
 
         } catch (CycleException e) {
 
@@ -145,8 +154,16 @@ public class DirectedGraph<T> {
         while(!vStack.empty()) {
 
             Vertex v = vStack.pop();
-            System.out.print(v.getName() + " ");
+            ///System.out.print(v.getName() + " ");
+            sortedResult.append(v.getName() + " ");
         }
+
+        //return result.toString();
+    }
+
+    public String getSortedResult() {
+
+        return sortedResult.toString();
     }
 
     private int depthFirstSearch(Vertex s) throws CycleException {
@@ -219,14 +236,16 @@ public class DirectedGraph<T> {
                 "ClassI ClassC";
 */
         // Sets the class to do the DFS for
-        String input = "ClassA";
-        DirectedGraph<String> graph = new DirectedGraph<String>(input);
+       // String input = "ClassA";
+       // DirectedGraph<String> graph = new DirectedGraph<String>(input);
 
         //graph.parseFile(filename);
 
         String filename = "graph.txt";
+
+        DirectedGraph<String>graph = new DirectedGraph<String>();
         graph.initGraph(filename);
-       graph.sortTopOrder();
+       //graph.sortTopOrder();
 
        // to do
         // tie to GUI
